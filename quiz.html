@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>网络价值观测试</title>
+  <link rel="icon" href="img/favicon.svg">
+
+  <!-- 脚本引入 -->
+  <script src="https://registry.npmmirror.com/jquery/3.7.1/files/dist/jquery.min.js"></script>
+  <script src="info/axes.js"></script>
+  <script src="info/questions.js"></script>
+  <!-- 先不加载quiz.js，等DOM加载完毕后再加载 -->
+
+  <!-- 字体和图标 -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
+ <style>
+    :root {
+      /* MD3调色板 */
+      --md-sys-color-primary: #6750A4;
+      --md-sys-color-on-primary: #FFFFFF;
+      --md-sys-color-primary-container: #EADDFF;
+      --md-sys-color-on-primary-container: #21005E;
+      --md-sys-color-secondary: #625B71;
+      --md-sys-color-on-secondary: #FFFFFF;
+      --md-sys-color-secondary-container: #E8DEF8;
+      --md-sys-color-on-secondary-container: #1E192B;
+      --md-sys-color-surface: #FEF7FF;
+      --md-sys-color-on-surface: #1C1B1F;
+      --md-sys-color-surface-variant: #E7E0EB;
+      --md-sys-color-on-surface-variant: #49454E;
+      --md-sys-color-outline: #79747E;
+      --md-sys-color-error: #B3261E;
+   
+      /* 色彩意义 */
+      --color-agree-strong: #1B5E20;
+      --color-agree: #2E7D32;
+      --color-agree-somewhat: #388E3C;
+      --color-neutral: #757575;
+      --color-disagree-somewhat: #D32F2F;
+      --color-disagree: #C62828;
+      --color-disagree-strong: #B71C1C;
+      
+      /* 排版和间距 */
+      --md-sys-typescale-display-small-size: 36px;
+      --md-sys-typescale-headline-large-size: 32px;
+      --md-sys-typescale-headline-medium-size: 28px;
+ --md-sys-typescale-headline-small-size: 24px;
+      --md-sys-typescale-title-large-size: 22px;
+      --md-sys-typescale-title-medium-size: 16px;
+      --md-sys-typescale-body-large-size: 16px;
+      --md-sys-typescale-body-medium-size: 14px;
+      
+      --md-sys-spacing-unit: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+margin: 0;
+      padding: 0;
+      font-family: 'Noto Sans SC', sans-serif;
+      background-color: var(--md-sys-color-surface);
+      color: var(--md-sys-color-on-surface);
+ line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 calc(var(--md-sys-spacing-unit) * 2);
+      flex: 1;
+    }
+
+    .header {
+      padding: 16px 0;
+      background-color: var(--md-sys-color-surface);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .header-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-weight: 500;
+      font-size: 20px;
+      color: var(--md-sys-color-primary);
+      text-decoration: none;
+    }
+
+    .main-content {
+      padding: calc(var(--md-sys-spacing-unit) * 3) 0;
+      flex: 1;
+    display: flex;
+      flex-direction: column;
+    }
+
+    /* 问题卡片 */
+    .question-card {
+      background-color: var(--md-sys-color-surface);
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: calc(var(--md-sys-spacing-unit) * 4);
+      margin: calc(var(--md-sys-spacing-unit) * 2) 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .question-number {
+      font-size: var(--md-sys-typescale-title-medium-size);
+      font-weight: 500;
+      color: var(--md-sys-color-on-surface-variant);
+      margin-bottom: calc(var(--md-sys-spacing-unit) * 2);
+      text-align: center;
+    }
+
+    .question-text {
+      font-size: var(--md-sys-typescale-headline-small-size);
+      font-weight: 400;
+      color: var(--md-sys-color-on-surface);
+      text-align: center;
+      margin-bottom: calc(var(--md-sys-spacing-unit) * 4);
+      flex: 1;
+  display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 按钮容器 */
+    .response-footer {
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: var(--md-sys-color-surface);
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+      padding: calc(var(--md-sys-spacing-unit) * 2) 0;
+      z-index: 10;
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr) auto;
+      gap: calc(var(--md-sys-spacing-unit));
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 calc(var(--md-sys-spacing-unit) * 2);
+    }
+
+    @media (max-width: 1200px) {
+      .button-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .button-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .prev-button-container {
+        grid-column: span 2;
+      }
+    }
+
+    /* MD3 按钮样式 */
+    .md-button {
+      font-family: 'Noto Sans SC', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 20px;
+      border-radius: 20px;
+      padding: 10px;
+      min-height: 48px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      text-transform: none;
+      letter-spacing: 0.1px;
+      width: 100%;
+    }
+
+    .md-button:focus-visible {
+      outline: 2px solid var(--md-sys-color-primary);
+      outline-offset: 2px;
+    }
+
+    /* 同意按钮系列 */
+    .btn-agree-strong {
+      background-color: var(--color-agree-strong);
+      color: white;
+    }
+
+    .btn-agree {
+      background-color: var(--color-agree);
+      color: white;
+    }
+
+    .btn-agree-somewhat {
+      background-color: var(--color-agree-somewhat);
+      color: white;
+    }
+
+    /* 中立按钮 */
+    .btn-neutral {
+      background-color: var(--color-neutral);
+      color: white;
+    }
+
+    /* 反对按钮系列 */
+    .btn-disagree-somewhat {
+      background-color: var(--color-disagree-somewhat);
+      color: white;
+    }
+
+    .btn-disagree {
+      background-color: var(--color-disagree);
+      color: white;
+    }
+
+    .btn-disagree-strong {
+      background-color: var(--color-disagree-strong);
+      color: white;
+    }
+
+    /* 前一题按钮 */
+    .btn-previous {
+      background-color: transparent;
+      color: var(--md-sys-color-on-surface-variant);
+      border: 1px solid var(--md-sys-color-outline);
+    }
+
+    .btn-previous:hover {
+      background-color: var(--md-sys-color-surface-variant);
+    }
+
+    /* 辅助类 */
+    .progress-indicator {
+      height: 4px;
+      background-color: var(--md-sys-color-surface-variant);
+      margin-bottom: calc(var(--md-sys-spacing-unit) * 2);
+      border-radius: 2px;
+overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background-color: var(--md-sys-color-primary);
+      transition: width 0.3s ease;
+    }
+
+    /* 弹性布局辅助类 */
+    .flex-center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .flex-column {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .flex-grow {
+      flex-grow: 1;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container header-container">
+      <a href="index.html" class="logo">网络价值观测试</a>
+    </div>
+  </header>
+
+  <main class="container main-content">
+    <div class="progress-indicator">
+      <div id="progress-bar" class="progress-bar" style="width: 0%"></div>
+    </div>
+    
+    <div class="question-card flex-column">
+      <div id="question-number" class="question-number">第 1 题，共 70 题</div>
+      <div id="question-text" class="question-text">这里是问题内容</div>
+</div>
+  </main>
+
+  <div class="response-footer">
+    <div class="button-grid">
+      <button id="btn-strongly-positive" class="md-button btn-agree-strong" data-choice-value="1.0">强烈同意</button>
+      <button id="btn-positive" class="md-button btn-agree" data-choice-value="0.6666666666666666">同意</button>
+      <button id="btn-somewhat-positive" class="md-button btn-agree-somewhat" data-choice-value="0.3333333333333333">有些同意</button>
+    <button id="btn-uncertain" class="md-button btn-neutral" data-choice-value="0.0">中立</button>
+      <button id="btn-somewhat-negative" class="md-button btn-disagree-somewhat" data-choice-value="-0.3333333333333333">有些反对</button>
+      <button id="btn-negative" class="md-button btn-disagree" data-choice-value="-0.6666666666666666">反对</button>
+      <button id="btn-strongly-negative" class="md-button btn-disagree-strong" data-choice-value="-1.0">强烈反对</button>
+      <div class="prev-button-container">
+        <button id="btn-prev" class="md-button btn-previous">上一题</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 包装原始quiz.js的功能，并与新UI适配
+    document.addEventListener('DOMContentLoaded', function() {
+      // 全局变量
+ let currentQuestion = 0;
+      let maxQuestion = questions.length;
+      let answers = [];
+      
+      // 更新进度条的功能
+      function updateProgressBar() {
+        const progressPercentage = ((currentQuestion + 1) / maxQuestion) * 100;
+        document.getElementById('progress-bar').style.width = `${progressPercentage}%`;
+        document.getElementById('question-number').textContent = `第 ${currentQuestion + 1} 题，共 ${maxQuestion} 题`;
+      }
+      
+      // 显示当前问题
+      function showQuestion() {
+        $("#question-text").text(questions[currentQuestion].question);
+        updateProgressBar();
+        
+        // 如果是第一题，禁用上一题按钮
+        if (currentQuestion === 0) {
+          $("#btn-prev").prop("disabled", true).css("opacity", "0.5");
+        } else {
+          $("#btn-prev").prop("disabled", false).css("opacity", "1");
+        }
+      }
+      
+      // 计算结果
+      function calculateResults() {
+        let results = {};
+  
+        // 初始化每个轴的结果为0
+        for (const axis of Object.keys(axes)) {
+          results[axis] = 0;
+        }
+        
+        // 对每个问题，根据答案和权重计算积分
+        for (let i = 0; i < questions.length; i++) {
+          const question = questions[i];
+          const answer = answers[i];  for (const axis in question.effect) {
+            results[axis] += answer * question.effect[axis];
+          }
+        }
+        
+        // 归一化结果到 -1 到 1 之间
+        for (const axis of Object.keys(axes)) {
+          results[axis] = results[axis] / maxQuestion;
+        }
+        
+        // 将结果存储到本地存储
+        localStorage.setItem("results", JSON.stringify(results));
+  
+        // 跳转到结果页
+        window.location.href = "results.html";
+      }
+      
+      // 注册按钮事件
+      $(".md-button").not("#btn-prev").click(function() {
+        const choiceValue = parseFloat($(this).data("choice-value"));
+        answers[currentQuestion] = choiceValue;
+        
+        currentQuestion++;
+        if (currentQuestion < maxQuestion) {
+     showQuestion();
+        } else {
+       calculateResults();
+        }
+      });
+      
+      // 上一题按钮
+      $("#btn-prev").click(function() {
+        if (currentQuestion > 0) {
+          currentQuestion--;
+      showQuestion();
+        }
+      });
+      
+      // 初始化showQuestion();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网络价值观测试</title>
+    <link rel="icon" href="img/favicon.jpg">
+
+    <meta property="og:title" content="网络价值观测试">
+    <meta property="og:description" content="网络价值观测试是一个专为中文互联网用户设计的价值观测试，通过8个维度来评估你的网络价值取向。">
+    <meta property="og:image" content="https://cnzv.github.io/img/social-preview.png">
+    <meta property="og:url" content="https://cnzv.github.io/">
+    <meta property="og:type" content="website">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="网络价值观测试">
+    <meta name="twitter:description" content="网络价值观测试是一个专为中文互联网用户设计的价值观测试，通过8个维度来评估你的网络价值取向。">
+    <meta name="twitter:image" content="https://cnzv.github.io/img/social-preview.png">
+
+    <script src="https://registry.npmmirror.com/jquery/3.7.1/files/dist/jquery.min.js"></script>
+    <script src="https://testingcf.jsdelivr.net/npm/@materializecss/materialize@2.2.1/dist/js/materialize.min.js"></script>
+    <script src="js/index.js"></script>
+
+    <link rel="stylesheet" href="https://testingcf.jsdelivr.net/npm/@materializecss/materialize@2.2.1/dist/css/materialize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.cn/css2?family=Material+Symbols+Rounded">
+    <style>
+        :root {
+            --primary-color: #3f51b5;
+            --primary-light: #757de8;
+            --primary-dark: #002984;
+            --secondary-color: #ff4081;
+            --text-on-primary: #ffffff;
+            --text-primary: #212121;
+            --text-secondary: #757575;
+            --background-color: #f5f5f5;
+            --card-color: #ffffff;
+            --error-color: #f44336;
+        }
+        
+        body {
+            font-family: 'Roboto', 'Noto Sans SC', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        .primary {
+            background-color: var(--primary-color) !important;
+        }
+        
+        .primary-text {
+            color: var(--primary-color) !important;
+        }
+        
+        .secondary {
+            background-color: var(--secondary-color) !important;
+        }
+        
+        .on-primary-text {
+            color: var(--text-on-primary) !important;
+        }
+        
+        .on-surface-text {
+            color: var(--text-primary) !important;
+        }
+        
+        .on-surface-variant-text {
+            color: var(--text-secondary) !important;
+        }
+        
+        .error-text {
+            color: var(--error-color) !important;
+        }
+        
+        .btn.filled {
+            background-color: var(--primary-color);
+            color: var(--text-on-primary);
+        }
+        
+        .btn.filled:hover {
+            background-color: var(--primary-light);
+        }
+        
+        .btn.rounded {
+            border-radius: 24px;
+        }
+        
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background-color: var(--card-color);
+        }
+        
+        .header-container {
+            padding: 40px 0 20px;
+        }
+        
+        .mt-4 {
+            margin-top: 2rem !important;
+        }
+        
+        .mb-4 {
+            margin-bottom: 2rem !important;
+        }
+        
+        .collapsible {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .collapsible-header {
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .collapsible-header i {
+            margin-right: 16px;
+            color: var(--primary-color);
+        }
+        
+        .collapsible-body {
+            padding: 24px;
+            background-color: var(--card-color);
+        }
+        
+        footer.page-footer {
+            padding-top: 20px;
+            margin-top: 40px;
+        }
+        
+        .footer-copyright {
+            padding: 15px 0;
+        }
+        
+        .divider {
+            margin: 30px 0;
+            background-color: rgba(0,0,0,0.1);
+        }
+        
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            background-color: var(--primary-light);
+            border-radius: 50%;
+            width: 200px;
+            margin: 0 auto;
+            color: white;
+            font-size: 36px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="navbar-container"></div>
+
+    <main class="container">
+        <div class="section">
+            <div class="row header-container">
+                <div class="col s12 m8 offset-m2 l6 offset-l3 center-align">
+                    <div class="logo-container">
+                        <span>网络价值观</span>
+                    </div>
+                </div>
+            </div>
+            <h1 class="center-align primary-text mt-4 mb-4">网络价值观测试</h1>
+            <h5 class="center-align on-surface-variant-text">这是一个专为中文互联网用户设计的价值观测试，通过8个维度来评估你的网络价值取向。</h5>
+
+            <div class="row center-align">
+                <div class="col s12 m10 offset-m1 l8 offset-l2">
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title primary-text">测试说明</span>
+                            <p class="on-surface-variant-text">
+                                接下来你将会看到一系列网络发言，请根据你的第一感觉选择同意或反对的程度，共有7个级别。
+                            </p>
+                            <p class="on-surface-variant-text">
+                                <b>注意：本测试仅供娱乐，不代表任何政治立场。</b>
+                            </p>
+                        </div>
+                        <div class="card-action center-align">
+                            <a id="start-quiz-btn" href="quiz.html" class="btn filled rounded btn-large waves-effect waves-light">
+                                点击开始
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12 m10 offset-m1 l8 offset-l2 mt-4">
+                <div class="divider"></div>
+                <h4 class="center-align on-surface-text mt-4 mb-4">常见问题</h4>
+                <ul class="collapsible expandable">
+                    <li class="active">
+                        <div class="collapsible-header flow-text valign-wrapper">
+                            <i class="material-symbols-rounded">help</i>你在后台收集测试结果吗？
+                        </div>
+                        <div class="collapsible-body">
+                            <p class="flow-text on-surface-variant-text">
+                                本测试完全由前端实现，不会收集任何个人信息。
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header flow-text valign-wrapper">
+                            <i class="material-symbols-rounded">help</i><span>为什么要创建这个测试？</span>
+                        </div>
+                        <div class="collapsible-body">
+                            <p class="flow-text on-surface-variant-text">
+                                现有的各种价值观测试多以欧美国家的现实为基准。我们希望创建一个更贴合中文互联网用户体验的测试，通过检验测试者在各种网络热点话题上的态度来描述他的价值取向。
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header flow-text valign-wrapper">
+                            <i class="material-symbols-rounded">help</i>测试结果代表什么？
+                        </div>
+                        <div class="collapsible-body">
+                            <p class="flow-text on-surface-variant-text">
+                                本测试结果借鉴了坐标轴形式，但每个坐标轴都是独立的维度，用于展示你在不同议题上的倾向性。测试结果仅供参考，不应被视为对你个人价值观的完整评估。
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header flow-text valign-wrapper">
+                            <i class="material-symbols-rounded">help</i>对测试有建议或反馈？
+                        </div>
+                        <div class="collapsible-body">
+                            <p class="flow-text on-surface-variant-text">
+                                测试结果仅供娱乐，不具有任何研究价值。如果有改进本测试的建设性想法，欢迎提交反馈。
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer class="page-footer primary mt-0 pt-0">
+        <div class="container">
+            <div class="row">
+                <div class="col l6 s12">
+                    <h5 class="on-primary-text">网络价值观测试</h5>
+                    <p class="on-primary-text">一个有趣的网络价值观测试工具</p>
+                </div>
+                <div class="col l4 offset-l2 s12">
+                    <h5 class="on-primary-text">链接</h5>
+                    <ul>
+                        <li><a class="on-primary-text" href="#">关于我们</a></li>
+                        <li><a class="on-primary-text" href="#">隐私政策</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <div class="container on-primary-text">
+                © 2023 网络价值观测试
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.collapsible');
+            var instances = M.Collapsible.init(elems, {accordion: false});
+        });
+    </script>
+</body>
+</html>

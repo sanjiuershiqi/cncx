@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CN Zoomer Values 测试结果</title>
+    <link rel="icon" href="img/favicon.jpg">
+    <script src="https://registry.npmmirror.com/jquery/3.7.1/files/dist/jquery.min.js"></script>
+    <script src="https://testingcf.jsdelivr.net/npm/@materializecss/materialize@2.2.1/dist/js/materialize.min.js"></script>
+    <script src="https://registry.npmmirror.com/html2canvas/1.4.1/files/dist/html2canvas.min.js"></script>
+    <script src="info/axes.js"></script>
+    <script src="js/results.js"></script>
+    <link rel="stylesheet" href="https://testingcf.jsdelivr.net/npm/@materializecss/materialize@2.2.1/dist/css/materialize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.cn/css2?family=Material+Symbols+Rounded">
+    <link rel="stylesheet" href="css/results.css">
+</head>
+<body>
+    <div id="navbar-container"></div>
+    <main class="container">
+        <div class="section">
+            <h2 class="center-align primary-text mt-4 mb-4">CN Zoomer Values 测试结果</h2>
+            <h5 class="center-align on-surface-variant-text mt-4 mb-4">你在简中互联网抽象意识形态中的位置</h5>
+            <div class="row">
+                <div class="card col s12 m10 offset-m1 l8 offset-l2" id="screenshot-target">
+                    <div class="card-content">
+                        <!-- Axis results will be injected here by js/results.js -->
+                    </div>
+                </div>
+            </div>
+            <div class="fixed-action-btn fab-refresh">
+                <a id="refresh" class="btn-floating btn-large tooltipped" data-position="left" data-tooltip="重新测试">
+                    <i class="material-symbols-rounded">refresh</i>
+                </a>
+            </div>
+            <div class="fixed-action-btn fab-share">
+                <a id="share" class="btn-floating btn-large tooltipped" data-position="left" data-tooltip="分享">
+                    <i class="material-symbols-rounded">share</i>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 初始化Materialize组件
+        M.AutoInit();
+        
+        // 刷新按钮事件
+        document.getElementById('refresh').addEventListener('click', function() {
+            window.location.href = 'quiz.html';
+        });
+        
+        // 分享按钮事件
+        document.getElementById('share').addEventListener('click', async function() {
+            try {
+                const target = document.getElementById('screenshot-target');
+                if (!target) throw new Error('找不到截图目标元素');
+
+                // 显示加载提示
+                M.toast({html: '正在生成截图...', classes: 'rounded'});
+
+                // 截图配置
+                const canvas = await html2canvas(target, {
+                    useCORS: true,
+                    scale: 2,
+                    logging: false
+                });
+
+                // 生成图片并下载
+                const imgData = canvas.toDataURL('image/png');
+                const link = document.createElement('a');
+                link.download = 'CN-Zoomer-Values-结果.png';
+                link.href = imgData;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                M.toast({html: '截图已保存', classes: 'rounded'});
+
+            } catch (error) {
+                console.error('截图失败:', error);
+                M.toast({html: `截图失败: ${error.message}`, classes: 'rounded red'});
+            }
+        });
+        
+        // 点击特效
+        let a_idx = 0;
+        let ac = new AudioContext();
+        
+        $(document).on('click', function(e) {
+            // 排除按钮点击，避免干扰功能按钮
+            if ($(e.target).closest('.btn-floating').length || 
+                $(e.target).closest('.material-symbols-rounded').length) {
+                return;
+            }
+            
+            const a = ["Ciallo～(∠・ω< )⌒★", "Ciallo～(∠・ω< )⌒☆"];
+            const $i = $("<span/>").text(a[a_idx % a.length]);
+            a_idx++;
+            
+            $i.css({
+                "z-index": 9999,
+                "top": e.pageY - 20,
+                "left": e.pageX,
+                "position": "absolute",
+                "font-weight": "bold",
+                "color": randomColor()
+            });
+            
+            $("body").append($i);
+            playSound('css/ciallo.aac');
+            
+            $i.animate({
+                "top": e.pageY - 180,
+                "opacity": 0
+            }, 1500, function() {
+                $i.remove();
+            });
+        });
+        
+        function randomColor() {
+            return '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+        }
+        
+        function playSound(url) {
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('网络响应不正常');
+                    }
+                    return response.arrayBuffer();
+                })
+                .then(arrayBuffer => ac.decodeAudioData(arrayBuffer))
+                .then(audioBuffer => {
+                    const source = ac.createBufferSource();
+                    source.buffer = audioBuffer;
+                    source.connect(ac.destination);
+                    source.start(0);
+                })
+                .catch(error => {
+                    console.error('音频播放失败:', error);
+                });
+        }
+    });
+    </script>
+</body>
+</html>
